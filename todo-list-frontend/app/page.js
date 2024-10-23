@@ -41,15 +41,6 @@ export default function Home() {
     e.preventDefault()
 
     const formURL = "http://localhost:8080/api/todo/add"
-    // const data = new FormData()
-
-    // // Turn our formData state into data we can use with a form submission
-    // Object.entries(formData).forEach(([key, value]) => {
-    //   data.append(key, value);
-    // })
-
-    // console.log('data', data)
-    // console.log('formData', formData)
 
     axios.post(formURL, JSON.stringify(formData), {
       headers: {
@@ -63,10 +54,6 @@ export default function Home() {
 
 
     })
-
-
-
-
 
   }
 
@@ -122,9 +109,6 @@ export default function Home() {
     (success) ? (<b>{toast.success(message)}</b>) : (<b>{toast.error(message)}</b>)
   );
 
-
-
-
   return (
 
     <div className="container">
@@ -139,7 +123,6 @@ export default function Home() {
 
       </div>
 
-
       <table className="centered">
         <thead>
           <tr>
@@ -151,7 +134,6 @@ export default function Home() {
         </thead>
 
         <tbody>
-
           {todos?.map(todo =>
             <tr key={todo.id}>
 
@@ -160,11 +142,7 @@ export default function Home() {
               >{todo.todo}</div></td>
               <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
             </tr>
-
-
           )}
-
-
         </tbody>
       </table>
 
