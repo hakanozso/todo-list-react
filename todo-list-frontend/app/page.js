@@ -18,8 +18,8 @@ export default function Home() {
   });
 
   const handleInput = (e) => {
-    console.log(e.target.name)
-    console.log(e.target.value)
+    // console.log(e.target.name)
+    // console.log(e.target.value)
     const fieldName = e.target.name;
     const fieldValue = e.target.value;
 
@@ -67,8 +67,8 @@ export default function Home() {
       }
     }).then((resp) => {
 
-      console.log('resp', formData)
-      console.log('resp', resp)
+      // console.log('resp', formData)
+      // console.log('resp', resp)
       if (resp.data.success) {
         setTodos(todos.filter(td => td.id != todoId))
       }
@@ -91,7 +91,7 @@ export default function Home() {
 
   useEffect(() => {
     getAllTodos().then((resp) => {
-      console.log('resp', resp)
+      // console.log('resp', resp)
       setTodos(resp.data)
     })
 
@@ -118,7 +118,7 @@ export default function Home() {
 
         <form action="" onSubmit={addTodo}>
           <input type="text" name="todoText" onChange={handleInput} placeholder="Todo giriniz." />
-          <button>Ekle</button>
+          <button style={{ marginLeft: '5px' }}>Ekle</button>
         </form>
 
       </div>
@@ -129,12 +129,34 @@ export default function Home() {
 
             <th>ID</th>
             <th>Todo</th>
-            <th>Operasyon</th>
+            <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
-          {todos?.map(todo =>
+
+          {todos.length > 0 ? (
+            <>
+              {todos?.map(todo =>
+                <tr key={todo.id}>
+
+                  <td style={{ width: '10% !important' }}>{todo.id}</td>
+                  <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
+                  >{todo.todo}</div></td>
+                  <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
+                </tr>
+              )}
+            </>
+          ) : (
+
+            <tr>
+
+              <td colSpan={3} style={{ textAlign: 'center' }}>Todo bulunamadı</td>
+            </tr>
+
+          )}
+
+          {/* {todos?.map(todo =>
             <tr key={todo.id}>
 
               <td style={{ width: '10% !important' }}>{todo.id}</td>
@@ -142,7 +164,7 @@ export default function Home() {
               >{todo.todo}</div></td>
               <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
             </tr>
-          )}
+          )} */}
         </tbody>
       </table>
 
