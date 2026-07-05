@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hakan</groupId>
-	<artifactId>todo-list</artifactId>
+	<artifactId>todo-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>todo-list</name>
 	<description>Demo project for Spring Boot</description>
