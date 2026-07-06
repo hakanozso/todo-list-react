@@ -174,15 +174,7 @@ export default function Home() {
 
             )}
 
-            {/* {todos?.map(todo =>
-              <tr key={todo.id}>
 
-                <td style={{ width: '10% !important' }}>{todo.id}</td>
-                <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
-                >{todo.todo}</div></td>
-                <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
-              </tr>
-            )} */}
           </tbody>
         </table>
       </div>
