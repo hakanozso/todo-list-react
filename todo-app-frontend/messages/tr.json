@@ -9,9 +9,6 @@
     "noTodo": "Todo bulunamadı",
     "edit": "Düzenle",
     "delete": "Sil"
-  },
-  "UserProfile": {
-    "title": "{firstName}'in profili",
-    "membership": "Uyelik tarihi: {memberSince, date, short}"
   }
+  
 }
