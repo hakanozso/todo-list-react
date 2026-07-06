@@ -5,8 +5,8 @@ A full-stack todo list application built with **Spring Boot** (backend) and **Ne
 ## Project Structure
 
 ```
-todo-list-backend/    # Spring Boot REST API
-todo-list-frontend/   # Next.js client application
+todo-app-backend/    # Spring Boot REST API
+todo-app-frontend/   # Next.js client application
 ```
 
 ## Technologies Used
@@ -22,8 +22,11 @@ todo-list-frontend/   # Next.js client application
 - Maven
 
 ### Frontend
-- **Next.js**
-- **React**
+- **Next.js 15+ (App Router)**
+- **React 18**
+- **next-intl** (Internationalization & Multi-language support)
+- **react-hot-toast** (Toast notifications)
+- **Axios** (HTTP Client)
 - ESLint
 
 ## Setup Instructions
@@ -38,7 +41,7 @@ todo-list-frontend/   # Next.js client application
 
 1. Navigate to the backend directory:
    ```bash
-   cd todo-list-backend
+   cd todo-app-backend
    ```
 
 2. Configure your database connection in `src/main/resources/application.properties` (or `application.yml`).
@@ -56,7 +59,7 @@ todo-list-frontend/   # Next.js client application
 
 1. Navigate to the frontend directory:
    ```bash
-   cd todo-list-frontend
+   cd todo-app-frontend
    ```
 
 2. Install dependencies:
@@ -73,7 +76,9 @@ todo-list-frontend/   # Next.js client application
 
 ## Features
 
-- Create, read, update, and delete todo items
-- RESTful API with validation
-- Interactive API documentation via Swagger UI
-- Responsive frontend built with Next.js
+- **CRUD Operations**: Create, read, update (in-place inline editing), and delete todo items.
+- **Internationalization (i18n)**: Multi-language support (English and Turkish) using `next-intl` with language toggle.
+- **Toast Notifications**: Interactive status notifications using `react-hot-toast` for CRUD actions.
+- **Responsive Layout**: Fluid UI optimized for all devices with maximum viewport height safety checks.
+- **Sleek Table UI**: Custom scrollbar styling, sticky table headers, and layout shift prevention using `scrollbar-gutter`.
+- **RESTful API**: Validated endpoints documented via Swagger UI.
