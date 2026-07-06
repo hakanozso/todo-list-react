@@ -120,8 +120,8 @@ export default function Home() {
     <div className="container">
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2%' }}>
-        <Link href={locale === "en" ? "/tr" : "/en"}>
-          {locale === "en" ? "Türkçe" : "English"}
+        <Link className="lang-btn" href={locale === "en" ? "/tr" : "/en"}>
+          {locale === "en" ? "Turkish" : "English"}
         </Link>
       </div>
 
