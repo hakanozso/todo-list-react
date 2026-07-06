@@ -2,7 +2,7 @@ import {getRequestConfig} from 'next-intl/server';
 
 export default getRequestConfig(async (context) => {
   // Support both `locale` and `requestLocale` across different next-intl versions
-  const localePromise = context.locale || (context as any).requestLocale;
+  const localePromise = context.locale || (context).requestLocale;
   const resolvedLocale = await localePromise;
   
   const safeLocale =
