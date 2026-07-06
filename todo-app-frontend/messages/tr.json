@@ -1,0 +1,17 @@
+{
+  "Home": {
+    "addTodo": "Todo Ekle",
+    "addTodoPlaceholder": "Todo giriniz.",
+    "todoManagement": "Todo Yönetimi",
+    "todoDescription": "Todo Açıklaması",
+    "action": "İşlem",
+    "id": "ID",
+    "noTodo": "Todo bulunamadı",
+    "edit": "Düzenle",
+    "delete": "Sil"
+  },
+  "UserProfile": {
+    "title": "{firstName}'in profili",
+    "membership": "Uyelik tarihi: {memberSince, date, short}"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "Home": {
+    "addTodo": "Add Todo",
+    "addTodoPlaceholder": "Enter your todo",
+    "todoManagement": "Todo Management",
+    "todoDescription": "Todo Description",
+    "action": "Action",
+    "noTodo": "No Todo Found",
+    "edit": "Edit",
+    "delete": "Delete",
+    "id": "ID"
+  },
+  "UserProfile": {
+    "title": "{firstName}'s profile",
+    "membership": "Member since {memberSince, date, short}"
+  }
+}

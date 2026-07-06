@@ -7,9 +7,13 @@ import { useState } from "react";
 
 import toast, { Toaster } from 'react-hot-toast';
 
+import { useTranslations, useLocale } from 'next-intl';
+
 
 export default function Home() {
 
+  const t = useTranslations('Home');
+  const locale = useLocale();
 
   const [todos, setTodos] = useState([]);
 
@@ -109,64 +113,79 @@ export default function Home() {
     (success) ? (<b>{toast.success(message)}</b>) : (<b>{toast.error(message)}</b>)
   );
 
+
+  console.log("TEST:", t("addTodo"));
   return (
 
     <div className="container">
 
-      <div className="centered" style={{ border: '1px solid black', marginBottom: '2%', padding: '15px' }}>
-        <h2>Todo Ekle</h2>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2%' }}>
+        <Link href={locale === "en" ? "/tr" : "/en"}>
+          {locale === "en" ? "Türkçe" : "English"}
+        </Link>
+      </div>
+
+      <div style={{ border: '1px solid black', marginBottom: '2%', padding: '15px', borderRadius: "6px" }}>
+
+        <h2>{t('todoManagement')}</h2>
 
         <form action="" onSubmit={addTodo}>
-          <input type="text" name="todoText" onChange={handleInput} placeholder="Todo giriniz." />
-          <button style={{ marginLeft: '5px' }}>Ekle</button>
+          <input type="text" name="todoText" onChange={handleInput} placeholder={t('addTodoPlaceholder')} />
+          <button style={{ marginLeft: '5px' }}>{t('addTodo')}</button>
         </form>
 
       </div>
 
-      <table className="centered">
-        <thead>
-          <tr>
-
-            <th>ID</th>
-            <th>Todo</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-
-          {todos.length > 0 ? (
-            <>
-              {todos?.map(todo =>
-                <tr key={todo.id}>
-
-                  <td style={{ width: '10% !important' }}>{todo.id}</td>
-                  <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
-                  >{todo.todo}</div></td>
-                  <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
-                </tr>
-              )}
-            </>
-          ) : (
-
+      <div className="table-wrapper">
+        <table>
+          <thead>
             <tr>
-
-              <td colSpan={3} style={{ textAlign: 'center' }}>Todo bulunamadı</td>
+              <th>{t("id")}</th>
+              <th>{t("todoDescription")}</th>
+              <th>{t("action")}</th>
             </tr>
+          </thead>
 
-          )}
+          <tbody>
 
-          {/* {todos?.map(todo =>
-            <tr key={todo.id}>
+            {todos.length > 0 ? (
+              <>
+                {todos?.map(todo =>
+                  <tr key={todo.id}>
 
-              <td style={{ width: '10% !important' }}>{todo.id}</td>
-              <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
-              >{todo.todo}</div></td>
-              <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
-            </tr>
-          )} */}
-        </tbody>
-      </table>
+                    <td style={{ width: '10% !important' }}>{todo.id}</td>
+                    <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
+                    >{todo.todo}</div></td>
+                    <td>
+                      <div className="action-buttons">
+                        <button onClick={() => editTodo(todo.id)}>{t('edit')}</button>
+                        <button onClick={() => deleteTodo(todo.id)}>{t('delete')}</button>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </>
+            ) : (
+
+              <tr>
+
+                <td colSpan={3} style={{ textAlign: 'center' }}>{t("noTodo")}</td>
+              </tr>
+
+            )}
+
+            {/* {todos?.map(todo =>
+              <tr key={todo.id}>
+
+                <td style={{ width: '10% !important' }}>{todo.id}</td>
+                <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
+                >{todo.todo}</div></td>
+                <td><button onClick={() => editTodo(todo.id)}>Düzenle</button>&nbsp;<button onClick={() => deleteTodo(todo.id)}>Sil</button></td>
+              </tr>
+            )} */}
+          </tbody>
+        </table>
+      </div>
 
 
       <Toaster
