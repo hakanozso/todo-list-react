@@ -1,7 +1,7 @@
 {
   "Home": {
     "addTodo": "Add Todo",
-    "addTodoPlaceholder": "Enter your todo",
+    "addTodoPlaceholder": "Enter your todo.",
     "todoManagement": "Todo Management",
     "todoDescription": "Todo Description",
     "action": "Action",
