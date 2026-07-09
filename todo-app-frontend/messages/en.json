@@ -4,6 +4,7 @@
     "addTodoPlaceholder": "Enter your todo.",
     "todoManagement": "Todo Management",
     "todoDescription": "Todo Description",
+    "todoPriority": "Todo Priority",
     "action": "Action",
     "noTodo": "No Todo Found",
     "edit": "Edit",

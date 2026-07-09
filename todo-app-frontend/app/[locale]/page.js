@@ -19,6 +19,7 @@ export default function Home() {
 
   const [formData, setFormData] = useState({
     todoText: "",
+    todoPriority: "LOW"
   });
 
   const handleInput = (e) => {
@@ -32,6 +33,8 @@ export default function Home() {
       [fieldName]: fieldValue
     }));
   }
+
+
 
 
   const getAllTodos = async () => {
@@ -81,10 +84,23 @@ export default function Home() {
 
   }
 
-  const editTodo = (todoId, todoText) => {
+  const editTodo = (todoId) => {
+
+    let todo = todos[todos.findIndex((todo) => todo.id === todoId)]
+
+    setTodos(prev =>
+      prev.map(todoI =>
+        todoI.id === todoId
+          ? { ...todoI, priority: "HIGH" }
+          : todoI
+      )
+    );
+
+    // console.log(todos[todos.findIndex((todo) => todo.id === todoId)])
+
 
     axios.post("http://localhost:8080/api/todo/edit",
-      JSON.stringify({ todoId: todoId, todoText: document.getElementById('todoText' + todoId).textContent.trim() }), {
+      JSON.stringify({ todoId: todoId, todoText: todo.todo, todoPriority: todo.priority }), {
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       }
@@ -114,7 +130,14 @@ export default function Home() {
   );
 
 
-  console.log("TEST:", t("addTodo"));
+  const todoPriorityOptions = [
+    "LOW",
+    "MEDIUM",
+    "HIGH"
+  ];
+
+
+
   return (
 
     <div className="container">
@@ -142,6 +165,7 @@ export default function Home() {
             <tr>
               <th>{t("id")}</th>
               <th>{t("todoDescription")}</th>
+              <th>{t("todoPriority")}</th>
               <th>{t("action")}</th>
             </tr>
           </thead>
@@ -156,12 +180,40 @@ export default function Home() {
                     <td style={{ width: '10% !important' }}>{todo.id}</td>
                     <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
                     >{todo.todo}</div></td>
+
+                    <td>
+
+                      {todo.priority}
+
+                      <select name="todos" id="todos" onChange={(e) =>
+                        setTodos(prevTodos =>
+                          prevTodos.map(todoI =>
+                            todoI.id === todo.id
+                              ? { ...todoI, priority: e.target.value }
+                              : todoI
+                          ))
+                      } defaultValue={todo.priority}>
+
+                        <option value="LOW">LOW</option>
+                        <option value="MEDIUM" >MEDIUM</option>
+                        <option value="HIGH" >HIGH</option>
+
+                      </select>
+
+
+
+                    </td>
+
+
+
+
                     <td>
                       <div className="action-buttons">
                         <button onClick={() => editTodo(todo.id)}>{t('edit')}</button>
                         <button onClick={() => deleteTodo(todo.id)}>{t('delete')}</button>
                       </div>
                     </td>
+
                   </tr>
                 )}
               </>
@@ -184,7 +236,7 @@ export default function Home() {
         position="top-right"
         reverseOrder={false}
       />
-    </div>
+    </div >
 
   );
 }

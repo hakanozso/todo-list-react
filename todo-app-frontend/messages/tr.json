@@ -4,11 +4,11 @@
     "addTodoPlaceholder": "Todo giriniz.",
     "todoManagement": "Todo Yönetimi",
     "todoDescription": "Todo Açıklaması",
+    "todoPriority": "Todo Önceliği",
     "action": "İşlem",
     "id": "ID",
     "noTodo": "Todo bulunamadı",
     "edit": "Düzenle",
     "delete": "Sil"
   }
-  
 }

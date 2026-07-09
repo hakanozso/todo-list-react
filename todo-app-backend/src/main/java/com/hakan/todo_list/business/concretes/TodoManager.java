@@ -35,11 +35,11 @@ public class TodoManager implements TodoService {
 		// TODO Auto-generated method stub
 		
 		Todo todo = new Todo();
-		todo.setTodo(todo2.getTodoText().trim());
+		todo.setTitle(todo2.getTitle().trim());
 
-		if(todo2.getTodoText().trim().isEmpty()) {
+		if(todo2.getTitle().trim().isEmpty()) {
 			return new ErrorDataResult<Todo>(null, "Lütfen bir todo giriniz.");
-		}else if(!this.todoDao.findByTodo(todo2.getTodoText().trim()).isEmpty()) {
+		}else if(!this.todoDao.findByTitle(todo2.getTitle().trim()).isEmpty()) {
 			return new ErrorDataResult<Todo>(null, "Todo daha önce eklenmiş.");
 		}else {
 			Todo newUser = this.todoDao.save(todo);
@@ -53,7 +53,7 @@ public class TodoManager implements TodoService {
 	public Result deleteTodo(TodoDTO todo) {
 		// TODO Auto-generated method stub
 		
-		this.todoDao.deleteById(todo.getTodoId());
+		this.todoDao.deleteById(todo.getId());
 		return new SuccessResult("Todo başarıyla silindi");
 		
 	}
@@ -61,15 +61,28 @@ public class TodoManager implements TodoService {
 	@Override
 	public Result editTodo(TodoDTO todo2) {
 		// TODO Auto-generated method stub
+
+		TodoDTO todo = this.todoDao.findById(todo2.getId()).orElse(null);
 		
-		if(todo2.getTodoText().trim().isEmpty()) {
+
+		if(todo2.getTitle().trim().isEmpty()) {
 			return new ErrorResult("Lütfen bir todo giriniz.");
-		}else if(!this.todoDao.findByTodo(todo2.getTodoText().trim()).isEmpty() && this.todoDao.findByTodo(todo2.getTodoText().trim()).get(0).getId() == todo2.getTodoId()) {
+		}else if(todo2.getPriority()== null) {
+			return new ErrorResult("Lütfen bir todo öncelikleri giriniz.");
+		}else if(
+			
+		
+			!todo2.getTitle().trim().equals(todo.getTitle()) && 
+
+			!todo2.getPriority().equals(todo.getPriority())
+		
+		) {
+
 			return new ErrorResult("Todo zaten aynı.");
-		}else if(!this.todoDao.findByTodo(todo2.getTodoText().trim()).isEmpty()) {
+
+		}else if(!this.todoDao.findByTitle(todo2.getTitle().trim()).isEmpty()) {
 			return new ErrorResult("Todo daha önce eklenmiş.");
 		}else {
-			Todo todo = new Todo(todo2.getTodoId(), todo2.getTodoText());
 			this.todoDao.save(todo);
 			return new SuccessResult("Todo başarıyla güncellendi.");
 		}

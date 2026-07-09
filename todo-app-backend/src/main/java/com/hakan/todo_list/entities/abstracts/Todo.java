@@ -1,6 +1,10 @@
 package com.hakan.todo_list.entities.abstracts;
 
+import com.hakan.todo_list.enums.TodoPriority;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +22,10 @@ public class Todo {
 
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	
-	private String todo;
+	private String title;
+
+	@Enumerated(EnumType.STRING)
+	private TodoPriority priority = TodoPriority.LOW;
 }

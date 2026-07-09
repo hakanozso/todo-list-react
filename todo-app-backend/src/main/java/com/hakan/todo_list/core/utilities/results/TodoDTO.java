@@ -1,5 +1,7 @@
 package com.hakan.todo_list.core.utilities.results;
 
+import com.hakan.todo_list.enums.TodoPriority;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public final class TodoDTO {
-	private int todoId;
-    private String todoText;
-//    private String parentCategory;
-   
+	private int id;
+    private String title;
+    private TodoPriority priority;
 }

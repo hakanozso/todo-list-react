@@ -9,6 +9,6 @@ import com.hakan.todo_list.entities.abstracts.Todo;
 
 public interface TodoDao extends JpaRepository<Todo, Integer> {
 	
-	List<Todo> findByTodo(String todo);
+	List<Todo> findByTitle(String title);
 
 }
