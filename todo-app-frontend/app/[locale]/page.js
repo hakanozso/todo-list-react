@@ -197,7 +197,7 @@ export default function Home() {
     <div className="container">
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2%' }}>
-        <Link className="lang-btn" href={locale === "en" ? "/tr" : "/en"}>
+        <Link className="btn" href={locale === "en" ? "/tr" : "/en"}>
           {locale === "en" ? "Turkish" : "English"}
         </Link>
       </div>
@@ -206,9 +206,9 @@ export default function Home() {
 
         <h2>{t('todoManagement')}</h2>
 
-        <form action="" onSubmit={addTodo}>
+        <form style={{ display: 'flex', gap: '10px', justifyContent: 'center' }} action="" onSubmit={addTodo}>
           <input type="text" name="title" onChange={handleInput} placeholder={t('addTodoPlaceholder')} />
-          <button style={{ marginLeft: '5px' }}>{t('addTodo')}</button>
+          <button className="btn">{t('addTodo')}</button>
         </form>
 
       </div>
@@ -308,8 +308,8 @@ export default function Home() {
 
                     <td>
                       <div className="action-buttons">
-                        <button onClick={() => editTodo(todo.id)}>{t('edit')}</button>
-                        <button onClick={() => deleteTodo(todo.id)}>{t('delete')}</button>
+                        <button className="btn" onClick={() => editTodo(todo.id)}>{t('edit')}</button>
+                        <button className="btn" onClick={() => deleteTodo(todo.id)}>{t('delete')}</button>
                       </div>
                     </td>
 

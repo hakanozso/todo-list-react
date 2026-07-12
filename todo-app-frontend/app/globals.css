@@ -115,3 +115,27 @@ table>tbody>tr>td:last-child {
   color: black;
 
 }
+
+
+.btn {
+
+  border: 1px solid grey;
+  border-radius: 3px;
+  padding: 5px 10px;
+  text-decoration: none;
+  background: white;
+  color: black;
+
+  cursor: default;
+
+
+
+  /* background: #EFEFEF; */
+
+
+
+}
+
+select {
+  border: 1px solid grey;
+}
