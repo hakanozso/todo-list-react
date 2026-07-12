@@ -16,7 +16,7 @@ table {
 }
 
 .table-wrapper {
-  max-height: calc(100vh - 250px);
+  max-height: calc(100vh - 275px);
   overflow: auto;
   border: 1px solid black;
   border-radius: 6px;
@@ -58,7 +58,7 @@ table tbody tr:last-child td {
 }
 
 table>thead>tr>th {
-  text-align: start;
+  text-align: center;
   margin-inline-start: 5px !important;
   padding-inline-start: 5px !important;
 }

@@ -1,5 +1,7 @@
 package com.hakan.todo_list.entities.abstracts;
 
+import java.time.LocalDateTime;
+
 import com.hakan.todo_list.enums.TodoPriority;
 
 import jakarta.persistence.Entity;
@@ -28,4 +30,6 @@ public class Todo {
 
 	@Enumerated(EnumType.STRING)
 	private TodoPriority priority = TodoPriority.LOW;
+
+	private LocalDateTime createdAt;
 }

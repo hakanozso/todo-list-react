@@ -11,4 +11,6 @@ public interface TodoDao extends JpaRepository<Todo, Integer> {
 	
 	List<Todo> findByTitle(String title);
 
+	List<Todo> findAllByOrderByPriorityAsc();
+
 }

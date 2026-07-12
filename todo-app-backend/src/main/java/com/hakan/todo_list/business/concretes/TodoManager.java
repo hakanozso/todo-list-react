@@ -1,5 +1,6 @@
 package com.hakan.todo_list.business.concretes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class TodoManager implements TodoService {
 	public DataResult<List<Todo>> getTodos() { 
 		// TODO Auto-generated method stub
 		
-		return new SuccessDataResult<List<Todo>>(this.todoDao.findAll(), "Veri başarıyla getirildi.");
+		return new SuccessDataResult<List<Todo>>(this.todoDao.findAllByOrderByPriorityAsc(), "Veri başarıyla getirildi.");
 		
 	}
 
@@ -36,11 +37,12 @@ public class TodoManager implements TodoService {
 		
 		Todo todo = new Todo();
 		todo.setTitle(todo2.getTitle().trim());
+		todo.setCreatedAt(LocalDateTime.now());
 
 		if(todo2.getTitle().trim().isEmpty()) {
 			return new ErrorDataResult<Todo>(null, "Lütfen bir todo giriniz.");
-		}else if(!this.todoDao.findByTitle(todo2.getTitle().trim()).isEmpty()) {
-			return new ErrorDataResult<Todo>(null, "Todo daha önce eklenmiş.");
+		// }else if(!this.todoDao.findByTitle(todo2.getTitle().trim()).isEmpty()) {
+		// 	return new ErrorDataResult<Todo>(null, "Todo daha önce eklenmiş.");
 		}else {
 			Todo newUser = this.todoDao.save(todo);
 			return new SuccessDataResult<Todo>(newUser, "Todo başarıyla eklendi.");
@@ -62,7 +64,10 @@ public class TodoManager implements TodoService {
 	public Result editTodo(TodoDTO todo2) {
 		// TODO Auto-generated method stub
 
-		TodoDTO todo = this.todoDao.findById(todo2.getId()).orElse(null);
+		
+		Todo todoR = this.todoDao.findById(todo2.getId()).orElse(null);
+
+
 		
 
 		if(todo2.getTitle().trim().isEmpty()) {
@@ -72,18 +77,22 @@ public class TodoManager implements TodoService {
 		}else if(
 			
 		
-			!todo2.getTitle().trim().equals(todo.getTitle()) && 
+			!todo2.getTitle().trim().equals(todoR.getTitle()) && 
 
-			!todo2.getPriority().equals(todo.getPriority())
+			!todo2.getPriority().equals(todoR.getPriority())
 		
 		) {
 
 			return new ErrorResult("Todo zaten aynı.");
 
-		}else if(!this.todoDao.findByTitle(todo2.getTitle().trim()).isEmpty()) {
-			return new ErrorResult("Todo daha önce eklenmiş.");
+		// }else if(!this.todoDao.findByTitle(todo2.getTitle().trim()).isEmpty()) {
+		// 	return new ErrorResult("Todo daha önce eklenmiş.");
+		// }
 		}else {
-			this.todoDao.save(todo);
+
+			todoR.setTitle(todo2.getTitle().trim());
+			todoR.setPriority(todo2.getPriority());
+			this.todoDao.save(todoR);
 			return new SuccessResult("Todo başarıyla güncellendi.");
 		}
 

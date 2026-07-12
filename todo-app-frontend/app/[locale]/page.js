@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useState } from "react";
 
 import toast, { Toaster } from 'react-hot-toast';
@@ -18,8 +18,9 @@ export default function Home() {
   const [todos, setTodos] = useState([]);
 
   const [formData, setFormData] = useState({
-    todoText: "",
-    todoPriority: "LOW"
+    title: "",
+    priority: "LOW",
+    createdAt: new Date().toISOString()
   });
 
   const handleInput = (e) => {
@@ -88,19 +89,19 @@ export default function Home() {
 
     let todo = todos[todos.findIndex((todo) => todo.id === todoId)]
 
-    setTodos(prev =>
-      prev.map(todoI =>
-        todoI.id === todoId
-          ? { ...todoI, priority: "HIGH" }
-          : todoI
-      )
-    );
+    // setTodos(prev =>
+    //   prev.map(todoI =>
+    //     todoI.id === todoId
+    //       ? { ...todoI, priority: "HIGH" }
+    //       : todoI
+    //   )
+    // );
 
     // console.log(todos[todos.findIndex((todo) => todo.id === todoId)])
 
 
     axios.post("http://localhost:8080/api/todo/edit",
-      JSON.stringify({ todoId: todoId, todoText: todo.todo, todoPriority: todo.priority }), {
+      JSON.stringify({ id: todo.id, title: todo.title, priority: todo.priority }), {
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       }
@@ -118,7 +119,7 @@ export default function Home() {
 
     setFormData((prevState) => ({
       ...prevState,
-      ["todoText"]: ""
+      ["title"]: ""
     }));
   }, [])
 
@@ -137,6 +138,59 @@ export default function Home() {
   ];
 
 
+  const todoPriorityOptionsSorted = [
+    { value: "mostRecent", label: t("mostRecent") },
+    { value: "leastRecent", label: t("leastRecent") },
+    { value: "highToLow", label: t("highPriority") + " → " + t("lowPriority") },
+    { value: "lowToHigh", label: t("lowPriority") + " → " + t("highPriority") },
+    { value: "titleDesc", label: t("titleDesc") },
+    { value: "titleAsc", label: t("titleAsc") }
+  ];
+
+
+  const [todoSortBy, setTodoSortBy] = useState("mostRecent");
+
+
+  const sortedTodos = useMemo(() => {
+    const list = [...todos];
+
+    switch (todoSortBy) {
+      case "mostRecent":
+        list.sort((a, b) => b.id - a.id);
+        break;
+
+      case "leastRecent":
+        list.sort((a, b) => a.id - b.id);
+        break;
+
+      case "highToLow":
+        list.sort((a, b) => {
+          const priorityOrder = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        });
+        break;
+
+      case "lowToHigh":
+        list.sort((a, b) => {
+          const priorityOrder = { HIGH: 3, MEDIUM: 2, LOW: 1 };
+          return priorityOrder[a.priority] - priorityOrder[b.priority];
+        });
+        break;
+
+      case "titleAsc":
+        list.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+
+      case "titleDesc":
+        list.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+    }
+
+    return list;
+  }, [todos, todoSortBy]);
+
+
+
 
   return (
 
@@ -153,9 +207,28 @@ export default function Home() {
         <h2>{t('todoManagement')}</h2>
 
         <form action="" onSubmit={addTodo}>
-          <input type="text" name="todoText" onChange={handleInput} placeholder={t('addTodoPlaceholder')} />
+          <input type="text" name="title" onChange={handleInput} placeholder={t('addTodoPlaceholder')} />
           <button style={{ marginLeft: '5px' }}>{t('addTodo')}</button>
         </form>
+
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '2%' }}>
+
+        <select
+          style={{ padding: '5px', borderRadius: '6px', border: '1px solid black' }}
+          name="todos" id="todos" onChange={(e) =>
+            setTodoSortBy(e.target.value)
+          } defaultValue={todoSortBy}>
+
+          <option value="mostRecent">{t("mostRecent")}</option>
+          <option value="leastRecent" >{t("leastRecent")}</option>
+          <option value="highToLow" >{t("highPriority") + " → " + t("lowPriority")}</option>
+          <option value="lowToHigh" >{t("lowPriority") + " → " + t("highPriority")}</option>
+          <option value="titleAsc" >{t("titleAsc")}</option>
+          <option value="titleDesc" >{t("titleDesc")}</option>
+
+        </select>
 
       </div>
 
@@ -164,8 +237,9 @@ export default function Home() {
           <thead>
             <tr>
               <th>{t("id")}</th>
-              <th>{t("todoDescription")}</th>
+              <th>{t("todoTitle")}</th>
               <th>{t("todoPriority")}</th>
+              <th>{t("todoCreatedDate")}</th>
               <th>{t("action")}</th>
             </tr>
           </thead>
@@ -174,29 +248,50 @@ export default function Home() {
 
             {todos.length > 0 ? (
               <>
-                {todos?.map(todo =>
+                {sortedTodos?.map(todo =>
                   <tr key={todo.id}>
 
-                    <td style={{ width: '10% !important' }}>{todo.id}</td>
-                    <td><div id={"todoText" + todo.id} style={{ width: '98%', padding: '1%' }} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
-                    >{todo.todo}</div></td>
-
+                    <td style={{ textAlign: 'center' }}>{todo.id}</td>
                     <td>
+                      <div id={"title" + todo.id} suppressContentEditableWarning={true} contentEditable="true" spellCheck="false"
+                        style={{
+                          maxWidth: "300px",
+                          wordBreak: "break-word",
+                          whiteSpace: "normal",
+                          padding: "2%",
+                        }}
 
-                      {todo.priority}
+                        onInput={(e) => {
+                          const updatedTitle = e.currentTarget.textContent;
+                          setTodos(prevTodos =>
+                            prevTodos.map(todoI =>
+                              todoI.id === todo.id
+                                ? { ...todoI, title: updatedTitle }
+                                : todoI
+                            ))
+                        }}
 
-                      <select name="todos" id="todos" onChange={(e) =>
-                        setTodos(prevTodos =>
-                          prevTodos.map(todoI =>
-                            todoI.id === todo.id
-                              ? { ...todoI, priority: e.target.value }
-                              : todoI
-                          ))
-                      } defaultValue={todo.priority}>
+                      >{todo.title}</div>
+                    </td>
 
-                        <option value="LOW">LOW</option>
-                        <option value="MEDIUM" >MEDIUM</option>
-                        <option value="HIGH" >HIGH</option>
+                    <td style={{ textAlign: 'center' }}>
+
+
+
+                      <select
+                        style={{ padding: '5px', borderRadius: '6px', border: '1px solid black', marginLeft: '10px' }}
+                        name="todos" id="todos" onChange={(e) =>
+                          setTodos(prevTodos =>
+                            prevTodos.map(todoI =>
+                              todoI.id === todo.id
+                                ? { ...todoI, priority: e.target.value }
+                                : todoI
+                            ))
+                        } defaultValue={todo.priority}>
+
+                        <option value="LOW">{t('low')}</option>
+                        <option value="MEDIUM" >{t('medium')}</option>
+                        <option value="HIGH" >{t('high')}</option>
 
                       </select>
 
@@ -205,7 +300,11 @@ export default function Home() {
                     </td>
 
 
+                    <td>
 
+                      {new Date(todo.createdAt).toLocaleString(locale, { calendar: 'gregory', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+
+                    </td>
 
                     <td>
                       <div className="action-buttons">
